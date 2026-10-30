@@ -5,11 +5,9 @@
 </script>
 <!-- =========================================================
      🔧 MAXY TV — ENLACES RÁPIDOS PARA EDITAR
-     Coloca el nombre o ruta local de tu APK dentro del mismo repositorio.
-     Ejemplo: "./maxy.apk" o el nombre con el que lo subas a GitHub.
      ========================================================= -->
 <script>
-var MAXY_DOWNLOAD_URL = "maxy.apk"; 
+var _encrypted_apk = "aHR0cHM6Ly9naXRodWIuY29tL3JkZWN0dmhkLW1heC9ydm5hcHBzL3JlbGVhc2VzL2Rvd25sb2FkL3YxMi45L01BWFkuVkIuT0ZJQ0lBTC5WMTIuOS5hcGs=";
 var MAXY_YOUTUBE_URL = "https://youtube.com/shorts/iNPBqAfuQ8A?si=zS95q6_f-CehJo1B";
 var MAXY_SEND_FILES_PLAY_URL = "https://play.google.com/store/apps/details?id=com.yablio.sendfilestotv";
 var MAXY_SEND_FILES_YOUTUBE_URL = "https://youtu.be/Ae8ZRDuPXjc?si=HOuBrfRMXKvC17-i";
@@ -445,21 +443,53 @@ body{font-family:Manrope,Arial,sans-serif;color:#fff}
 
 <script>
 /* =========================================================
-   DESCARGA INTERNA SILENCIOSA
-   Intercepta el clic para forzar la descarga en el mismo sitio
-   sin abrir pestañas ni exponer URLs externas en el navegador.
+   DESCARGA SEGURA BLOB (EVITA PESTAÑAS NUEVAS Y EXPONER URLS)
    ========================================================= */
 
 document.getElementById("maxy-download").addEventListener("click", function(e) {
-    e.preventDefault(); // Evita que abra otra página
+    e.preventDefault(); // Bloquea cualquier redirección o apertura de pestañas
     
-    var hiddenLink = document.createElement('a');
-    hiddenLink.href = MAXY_DOWNLOAD_URL;
-    hiddenLink.setAttribute('download', 'MAXY.TV.OFICIAL.apk');
+    var btn = this;
+    var originalText = btn.innerHTML;
+    btn.innerHTML = "↓ &nbsp; PREPARANDO DESCARGA...";
     
-    document.body.appendChild(hiddenLink);
-    hiddenLink.click();
-    document.body.removeChild(hiddenLink);
+    try {
+        var realUrl = atob(_encrypted_apk);
+        
+        // Descargamos de forma oculta en memoria local mediante Blob
+        fetch(realUrl)
+            .then(response => response.blob())
+            .then(blob => {
+                var blobUrl = window.URL.createObjectURL(blob);
+                var hiddenLink = document.createElement('a');
+                
+                hiddenLink.href = blobUrl;
+                hiddenLink.download = 'MAXY.TV.OFICIAL.V12.9.apk';
+                
+                document.body.appendChild(hiddenLink);
+                hiddenLink.click();
+                
+                document.body.removeChild(hiddenLink);
+                window.URL.revokeObjectURL(blobUrl);
+                
+                btn.innerHTML = originalText;
+            })
+            .catch(err => {
+                // Alternativa interna en caso de restricciones CORS
+                var fallbackLink = document.createElement('a');
+                fallbackLink.href = realUrl;
+                fallbackLink.setAttribute('download', 'MAXY.TV.OFICIAL.V12.9.apk');
+                document.body.appendChild(fallbackLink);
+                fallbackLink.click();
+                document.body.removeChild(fallbackLink);
+                
+                btn.innerHTML = originalText;
+            });
+            
+    } catch(err) {
+        alert("Error al procesar la descarga segura.");
+        btn.innerHTML = originalText;
+    }
 });
 
 function getYoutubeID(url){
