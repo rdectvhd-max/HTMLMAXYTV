@@ -5,10 +5,11 @@
 </script>
 <!-- =========================================================
      🔧 MAXY TV — ENLACES RÁPIDOS PARA EDITAR
-     Aquí cambias tus enlaces normalmente cuando haya actualizaciones.
+     Coloca el nombre o ruta local de tu APK dentro del mismo repositorio.
+     Ejemplo: "./maxy.apk" o el nombre con el que lo subas a GitHub.
      ========================================================= -->
 <script>
-var MAXY_DOWNLOAD_URL = "https://github.com/rdectvhd-max/rvnapps/releases/download/v12.9/MAXY.TV.OFICIAL.V12.9.apk";
+var MAXY_DOWNLOAD_URL = "maxy.apk"; 
 var MAXY_YOUTUBE_URL = "https://youtube.com/shorts/iNPBqAfuQ8A?si=zS95q6_f-CehJo1B";
 var MAXY_SEND_FILES_PLAY_URL = "https://play.google.com/store/apps/details?id=com.yablio.sendfilestotv";
 var MAXY_SEND_FILES_YOUTUBE_URL = "https://youtu.be/Ae8ZRDuPXjc?si=HOuBrfRMXKvC17-i";
@@ -444,16 +445,14 @@ body{font-family:Manrope,Arial,sans-serif;color:#fff}
 
 <script>
 /* =========================================================
-   DESCARGA DIRECTA INTERNA (SIN ABRIR NUEVAS PÁGINAS)
-   Aquí el enlace se lee normal para que lo edites fácil,
-   pero el script intercepta el clic para forzar la descarga
-   en segundo plano sin redirigir al usuario.
+   DESCARGA INTERNA SILENCIOSA
+   Intercepta el clic para forzar la descarga en el mismo sitio
+   sin abrir pestañas ni exponer URLs externas en el navegador.
    ========================================================= */
 
 document.getElementById("maxy-download").addEventListener("click", function(e) {
-    e.preventDefault(); // Evita que el navegador abra una pestaña o ventana nueva
+    e.preventDefault(); // Evita que abra otra página
     
-    // Crea un enlace dinámico oculto que fuerza la descarga en la misma página
     var hiddenLink = document.createElement('a');
     hiddenLink.href = MAXY_DOWNLOAD_URL;
     hiddenLink.setAttribute('download', 'MAXY.TV.OFICIAL.apk');
